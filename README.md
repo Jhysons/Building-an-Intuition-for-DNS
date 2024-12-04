@@ -19,23 +19,40 @@ This tutorial outlines The Domain Name System (DNS) protocol is an important par
 
 <h2>DNS Tutorial Stages</h2>
 
+- Remote Desktop
 - Ping Mainframe
 - Nslookup Mainframe
 - Change Record Address
 
 <h2>Stages</h2>
 
+<h2>Connect to the Server via Remote Desktop</h2>
+
 <p>
+
+<img src="https://i.imgur.com/gJZx2GQ.png" height="80%" width="80%" alt="Disk Sanitization Steps"/>
+
+  
+Open Remote Desktop Connection: On your local machine, press Win + R, type mstsc, and press Enter.
+
+Enter the Server's IP Address: In the Remote Desktop Connection window, enter the IP address or hostname of the server you want to connect to and click Connect.
+
+Log In: Enter your credentials to log in to the server.
+
 <img src="https://i.imgur.com/f081WGM.png" height="80%" width="80%" alt="Disk Sanitization Steps"/>
 </p>
 <p>
-Turn on VMs: Ensure both DC-1 and Client-1 VMs are powered on in the Azure Portal.
-Log into DC-1: Connect to DC-1 using your domain admin account.
-Log into Client-1: Connect to Client-1 using an admin account.
-Ping Mainframe: From Client-1, open Command Prompt and try to ping "mainframe". You'll notice it fails because there's no DNS record for "mainframe".
-Nslookup Mainframe: Use the nslookup command to query "mainframe" and observe that it fails due to the absence of a DNS record.
-Create A-Record: On DC-1, open the DNS Manager and create an A-record for "mainframe" pointing to DC-1's Private IP address.
-Ping Mainframe Again: Return to Client-1 and ping "mainframe" again. This time, it should succeed because the DNS record now exists.
+Log into DC-1: Use your domain admin account .
+
+Log into Client-1: Use an admin account .
+
+Ping "mainframe" from Client-1: Notice that it fails.
+
+Nslookup "mainframe" from Client-1: Notice that it fails (no DNS record).
+
+Create a DNS A-record on DC-1: Point "mainframe" to DC-1’s Private IP address.
+
+Ping "mainframe" from Client-1 again: Observe that it works.
 </p>
 <br />
 
@@ -43,9 +60,17 @@ Ping Mainframe Again: Return to Client-1 and ping "mainframe" again. This time, 
 <img src="https://i.imgur.com/ha1v9AR.png" height="80%" width="80%" alt="Disk Sanitization Steps"/>
 </p>
 <p>
-Change Record Address: On DC-1, modify the "mainframe" A-record to point to 8.8.8.8.
-Ping Mainframe: From Client-1, ping "mainframe" again. You'll notice it still pings the old address because of the local DNS cache.
-Display DNS Cache: On Client-1, use the ipconfig /displaydns command to display the local DNS cache and observe the cached entry for "mainframe".
+Change mainframe’s record address on DC-1: Set it to 8.8.8.8.
+
+Ping "mainframe" from Client-1 again: Observe that it still pings the old address.
+
+Observe the local DNS cache on Client-1: Use ipconfig /displaydns.
+
+Flush the DNS cache on Client-1: Use ipconfig /flushdns.
+
+Observe the empty cache on Client-1: Use ipconfig /displaydns.
+
+Ping "mainframe" from Client-1 again: Observe the new record address showing up.
 </p>
 <br />
 
@@ -53,8 +78,10 @@ Display DNS Cache: On Client-1, use the ipconfig /displaydns command to display 
 <img src="https://i.imgur.com/yhgDpsl.png" height="80%" width="80%" alt="Disk Sanitization Steps"/>
 </p>
 <p>
-Flush DNS Cache: Clear the local DNS cache using the ipconfig /flushdns command.
-Display DNS Cache Again: Verify the cache is empty by running ipconfig /displaydns again.
-Ping Mainframe Again: Ping "mainframe" once more and observe that it now resolves to the new address (8.8.8.8).
+Create a CNAME record on DC-1: Point the host "search" to "www.google.com".
+
+Ping "search" from Client-1: Observe the results of the CNAME record.
+
+Nslookup "search" from Client-1: Observe the results of the CNAME record.
 </p>
 <br />
